@@ -1,19 +1,17 @@
 'use client';
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from './components/Header';
 import { WelcomeBanner } from './components/WelcomeBanner';
 import { QuickActionsSection } from './components/QuickActionsSection';
 import { DashboardFooter } from './components/DashboardFooter';
 
-interface DashboardPageProps {
-  userName?: string;
-}
-
-export default function DashboardPage({ 
-  userName = "Usuario"
-}: DashboardPageProps) {
+export default function DashboardPage() {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const userName = searchParams.get('username') || "Usuario";
 
   // Get user initial for avatar
   const userInitial = userName.charAt(0).toUpperCase();
