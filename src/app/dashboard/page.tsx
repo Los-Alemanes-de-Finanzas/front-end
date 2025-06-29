@@ -8,12 +8,10 @@ import { DashboardFooter } from './components/DashboardFooter';
 
 interface DashboardPageProps {
   userName?: string;
-  userEmail?: string;
 }
 
 export default function DashboardPage({ 
-  userName = "Usuario",
-  userEmail = "usuario@email.com" 
+  userName = "Usuario"
 }: DashboardPageProps) {
   const router = useRouter();
 
