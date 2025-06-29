@@ -1,5 +1,9 @@
+import { WelcomePage } from "./_index/welcome-page";
+
 export default function Home() {
   return (
-    <p>Hello World!</p>
+    <main>
+      <WelcomePage />
+    </main>
   );
 }
