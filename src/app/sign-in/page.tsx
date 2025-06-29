@@ -55,8 +55,10 @@ export default function LoginPage() {
       // Replace with your actual login API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
+      const userName = formData.email.split("@")[0];
+
       // On successful login
-      router!.push('/dashboard');
+      router.push(`/dashboard?username=${encodeURIComponent(userName)}`);
     } catch (error) {
       console.error('Login error:', error);
       // Handle login error
