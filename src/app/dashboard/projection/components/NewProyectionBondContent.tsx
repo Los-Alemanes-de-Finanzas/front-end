@@ -23,7 +23,7 @@ export const NewProyectionBondContent: React.FC = () => {
             <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
-                <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+                <h1 className="text-3xl font-bold text-center text-gray-900 my-8">
                 NUEVA PROYECCIÓN DE BONO
                 </h1>
                 
