@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CustomSelect, SelectOption } from "./CustomSelect";
 import { Header } from "../../components/Header";
+import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 interface ScheduleRow {
   period: number;
   fecha: string;

@@ -1,10 +1,10 @@
 'use client';
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { CustomSelect, SelectOption } from "./CustomSelect";
+import { useRouter, useSearchParams } from "next/navigation"
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { IndicatorField } from "./IndicatorField";
 import { Header } from "../../components/Header";
+import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 
 const FinancialAnalysisContent: React.FC = () => {
   const [selectedBond, setSelectedBond] = useState('');

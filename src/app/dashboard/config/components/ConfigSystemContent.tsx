@@ -1,7 +1,7 @@
 'use client'
+import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useState } from "react";
-import { CustomSelect, SelectOption } from "./CustomSelect";
 
 const ConfigSystemContent: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('');
