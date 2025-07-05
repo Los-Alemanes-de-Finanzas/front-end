@@ -30,7 +30,9 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-xl font-semibold text-teal-500">BonoPlan</h1>
+            <a href="/dashboard">
+              <h1 className="text-xl font-semibold text-teal-500 cursor-pointer">BonoPlan</h1>
+            </a>
           </div>
 
           {/* User Menu */}
