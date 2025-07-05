@@ -1,8 +1,6 @@
 'use client';
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { Header } from "../../components/Header";
-import { useRouter, useSearchParams } from "next/navigation";
 
 export interface SelectOption {
   value: string;
@@ -21,9 +19,6 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onCh
   
   const selectedOption = options.find(option => option.value === value);
   
-  
-  
-
   return (
     <>
         <div className="relative w-full">
