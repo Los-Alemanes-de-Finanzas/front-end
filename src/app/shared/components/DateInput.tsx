@@ -6,7 +6,7 @@ interface DateInputProps {
   placeholder: string;
 }
 
-const DateInput: React.FC<DateInputProps> = ({ value, onChange, placeholder }) => {
+export const DateInput: React.FC<DateInputProps> = ({ value, onChange, placeholder }) => {
   return (
     <div className="relative w-full">
       <input
