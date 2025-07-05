@@ -79,7 +79,6 @@ const GracePeriodsContent: React.FC = () => {
     const userInitial = userName.charAt(0).toUpperCase();
   
     const handleLogout = () => {
-      console.log('Logging out...');
       router.push('/');
     };
 
