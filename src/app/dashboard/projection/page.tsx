@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useBondForm } from './hooks/useBondForm';
