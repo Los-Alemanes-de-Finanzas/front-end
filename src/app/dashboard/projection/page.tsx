@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { NewProyectionBondContent } from "./components/NewProyectionBondContent";
 
-export const NewProyectionBond = () => {
+export default function NewProyectionBond() {
     return (
         <Suspense>
             <NewProyectionBondContent />
