@@ -4,11 +4,9 @@ import { FormInput } from '../../shared/components/FormInput';
 import { GenericButton } from '@/app/shared/components/GenericButton';
 
 interface RegisterFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
+  username: string;
   password: string;
-  birthDate: string;
+  confirmedPassword: string;
 }
 
 interface RegisterFormProps {
@@ -21,11 +19,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   loading = false
 }) => {
   const [formData, setFormData] = useState<RegisterFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
+    username: '',
     password: '',
-    birthDate: ''
+    confirmedPassword: ''
   });
 
   const [errors, setErrors] = useState<Partial<RegisterFormData>>({});
@@ -33,18 +29,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   const validateForm = (): boolean => {
     const newErrors: Partial<RegisterFormData> = {};
 
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'El nombre es requerido';
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'El apellido es requerido';
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'El correo electrónico es requerido';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'El correo electrónico no es válido';
+    if (!formData.username.trim()) {
+      newErrors.username = 'El correo electrónico es requerido';
+    } else if (!/\S+@\S+\.\S+/.test(formData.username)) {
+      newErrors.username = 'El correo electrónico no es válido';
     }
 
     if (!formData.password.trim()) {
@@ -53,8 +41,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
     }
 
-    if (!formData.birthDate) {
-      newErrors.birthDate = 'La fecha de nacimiento es requerida';
+    if (!formData.confirmedPassword.trim()) {
+      newErrors.confirmedPassword = 'La contraseña es requerida';
+    } else if (formData.confirmedPassword.length < 8) {
+      newErrors.confirmedPassword = 'La contraseña debe tener al menos 8 caracteres';
     }
 
     setErrors(newErrors);
@@ -78,34 +68,14 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FormInput
-          label="Nombre"
-          value={formData.firstName}
-          onChange={(value) => handleInputChange('firstName', value)}
-          placeholder="Juan"
-          required
-          error={errors.firstName}
-        />
-        
-        <FormInput
-          label="Apellido"
-          value={formData.lastName}
-          onChange={(value) => handleInputChange('lastName', value)}
-          placeholder="Pérez"
-          required
-          error={errors.lastName}
-        />
-      </div>
-
       <FormInput
         label="Correo Electrónico"
         type="email"
-        value={formData.email}
-        onChange={(value) => handleInputChange('email', value)}
+        value={formData.username}
+        onChange={(value) => handleInputChange('username', value)}
         placeholder="correo@ejemplo.com"
         required
-        error={errors.email}
+        error={errors.username}
       />
 
       <FormInput
@@ -119,12 +89,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
       />
 
       <FormInput
-        label="Fecha de Nacimiento"
-        type="date"
-        value={formData.birthDate}
-        onChange={(value) => handleInputChange('birthDate', value)}
+        label="Confirmar Contraseña"
+        type="password"
+        value={formData.confirmedPassword}
+        onChange={(value) => handleInputChange('confirmedPassword', value)}
+        placeholder="Ingrese la misma contraseña"
         required
-        error={errors.birthDate}
+        error={errors.confirmedPassword}
       />
 
       <div className="pt-4">
