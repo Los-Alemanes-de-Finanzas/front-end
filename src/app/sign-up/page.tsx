@@ -4,11 +4,9 @@ import { useRouter } from 'next/navigation';
 import { RegisterForm } from './components/RegisterForm';
 
 interface RegisterFormData {
-  firstName: string;
-  lastName: string;
-  email: string;
+  username: string;
   password: string;
-  birthDate: string;
+  confirmedPassword: string;
 }
 
 export default function RegisterPage() {
@@ -57,7 +55,7 @@ export default function RegisterPage() {
               ¿Ya tienes una cuenta?{' '}
               <button
                 onClick={handleBackToLogin}
-                className="text-teal-500 hover:text-teal-600 font-medium"
+                className="text-teal-500 hover:text-teal-600 font-medium hover:underline hover:cursor-grab"
               >
                 Inicia sesión aquí
               </button>

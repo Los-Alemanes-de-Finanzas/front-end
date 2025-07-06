@@ -137,7 +137,7 @@ export default function LoginPage() {
               ¿No tienes cuenta?{' '}
               <button
                 onClick={handleGoToRegister}
-                className="text-teal-500 hover:text-teal-600 font-medium"
+                className="text-teal-500 hover:text-teal-600 font-medium hover:underline hover:cursor-grab"
               >
                 Regístrate aquí
               </button>
