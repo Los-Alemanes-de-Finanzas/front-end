@@ -75,10 +75,6 @@ export default function LoginPage() {
     router.push('/sign-up');
   };
 
-  const handleGoToForgotPassword = () => {
-    router.push('/forgot-password');
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
@@ -144,17 +140,6 @@ export default function LoginPage() {
                 className="text-teal-500 hover:text-teal-600 font-medium"
               >
                 Regístrate aquí
-              </button>
-            </p>
-          </div>
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              ¿Olvidaste tu contraseña?{' '}
-              <button
-                onClick={handleGoToForgotPassword}
-                className="text-teal-500 hover:text-teal-600 font-medium"
-              >
-                Click aquí
               </button>
             </p>
           </div>
