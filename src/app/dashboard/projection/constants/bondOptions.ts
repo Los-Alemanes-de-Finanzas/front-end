@@ -1,10 +1,12 @@
 import { SelectOption } from "@/app/shared/components/CustomSelect";
 
 export const FREQUENCY_OPTIONS: SelectOption[] = [
-  { value: 'monthly', label: 'Mensual' },
-  { value: 'quarterly', label: 'Trimestral' },
-  { value: 'semiannual', label: 'Semestral' },
-  { value: 'annual', label: 'Anual' }
+  { value: 'mensual', label: 'Mensual' },
+  { value: 'bimestral', label: 'Bimestral'},
+  { value: 'trimestral', label: 'Trimestral' },
+  { value: 'cuatrimestral', label: 'Cuatrimestral'},
+  { value: 'semestral', label: 'Semestral' },
+  { value: 'anual', label: 'Anual' }
 ];
 
 export const DAYS_OPTIONS: SelectOption[] = [
