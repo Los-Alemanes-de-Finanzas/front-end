@@ -41,3 +41,5 @@ const createIssuanceCost = async (newIssuanceCost : IssuanceCost) => {
         }
     }
 }
+
+export default createIssuanceCost;
