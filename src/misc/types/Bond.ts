@@ -1,0 +1,20 @@
+export interface Bond {
+    id: number,
+    name: string,
+    userId: number,
+    nominalValue: number,
+    commercialValue: number,
+    numberOfYears: number,
+    couponFrequency: string,
+    daysPerYear: number,
+    interestRateType: string,
+    capitalization: number,
+    interestRate: number,
+    annualDiscountRate: number,
+    issueDate: Date,
+    gracePeriodType: number,
+    gracePeriodDuration: number,
+    currency: string,
+    effectiveAnnualRate: number,
+    cokPerPeriod: number
+}
