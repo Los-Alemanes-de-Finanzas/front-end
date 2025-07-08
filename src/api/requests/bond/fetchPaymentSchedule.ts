@@ -3,12 +3,13 @@ import { HEADERS } from "@/misc/constants/api";
 import { BOND_ROUTES } from "@/misc/constants/apiRoutes";
 import { AxiosError } from "axios";
 
-const calculateFinalCosts = async (id : string) => {
+
+const fetchPaymentSchedule = async (id: string) => {
     const client = unauthenticatedClient;
 
     try {
-        const endpoint = BOND_ROUTES.ROUTE_CALCULATE_FINAL_COSTS_BY_ID(id);
-        const response = await client.put(endpoint, {
+        const endpoint = BOND_ROUTES.ROUTE_PAYMENT_SCHEDULE_BY_ID(id);
+        const response = await client.get(endpoint, {
             headers: {
                 [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON
             }
@@ -35,7 +36,7 @@ const calculateFinalCosts = async (id : string) => {
             console.error('An unknown error occurred:', error);
             throw new Error('An unknown error occurred');
         }
-}
+    }
 }
 
-export default calculateFinalCosts;
+export default fetchPaymentSchedule;

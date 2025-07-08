@@ -1,25 +1,27 @@
 import unauthenticatedClient from "@/api/clients/unauthenticated";
 import { HEADERS } from "@/misc/constants/api";
-import { BOND_ROUTES } from "@/misc/constants/apiRoutes";
+import { ISSUANCE_COSTS_ROUTES } from "@/misc/constants/apiRoutes";
 import { AxiosError } from "axios";
 
-const calculateFinalCosts = async (id : string) => {
+const fetchIssuanceCostById = async (id: string) => {
     const client = unauthenticatedClient;
 
     try {
-        const endpoint = BOND_ROUTES.ROUTE_CALCULATE_FINAL_COSTS_BY_ID(id);
-        const response = await client.put(endpoint, {
+        const endpoint = ISSUANCE_COSTS_ROUTES.ROUTE_GET_BY_ID(id)
+        
+        const response = await client.get(endpoint, {
             headers: {
-                [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON
-            }
-        })
+                [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON,
+            },
+        });
 
-        return response.data;
-    } catch (error: unknown) {
+        console.log(response.status)
+    } catch(error: unknown) {
         // 5. Handle errors
         if (error instanceof AxiosError) {
             const statusCode = error.response?.status || 'Unknown';
-            const errorMessage = error.response?.data?.message || 'Failed to fetch calculus of initial costs.';
+            const errorMessage = error.response?.data?.message || 'Failed to delete commodity';
+
             console.error('AxiosError occurred:', {
                 statusCode,
                 errorMessage,
@@ -35,7 +37,7 @@ const calculateFinalCosts = async (id : string) => {
             console.error('An unknown error occurred:', error);
             throw new Error('An unknown error occurred');
         }
-}
+    }
 }
 
-export default calculateFinalCosts;
+export default fetchIssuanceCostById;

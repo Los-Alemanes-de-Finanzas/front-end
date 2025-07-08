@@ -14,11 +14,13 @@ const createIssuanceCost = async (newIssuanceCost : IssuanceCost) => {
         const endpoint = ISSUANCE_COSTS_ROUTES.ROUTE_CREATE();
 
         // 4. Make a POST request to the endpoint using the client
-        await client.post<IssuanceCost>(endpoint, newIssuanceCost, {
+        const response = await client.post(endpoint, newIssuanceCost, {
             headers: {
                 [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON,
             }
         })
+
+        console.log(response.status)
     } catch (error: unknown) {
          // 5. Handle errors
         if (error instanceof AxiosError) {

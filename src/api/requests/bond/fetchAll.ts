@@ -1,14 +1,17 @@
 import unauthenticatedClient from "@/api/clients/unauthenticated";
 import { HEADERS } from "@/misc/constants/api";
 import { BOND_ROUTES } from "@/misc/constants/apiRoutes";
+import { Bond } from "@/misc/types/Bond";
 import { AxiosError } from "axios";
 
-const calculateFinalCosts = async (id : string) => {
+
+const fetchAllBonds = async () => {
     const client = unauthenticatedClient;
 
     try {
-        const endpoint = BOND_ROUTES.ROUTE_CALCULATE_FINAL_COSTS_BY_ID(id);
-        const response = await client.put(endpoint, {
+        const endpoint = BOND_ROUTES.ROUTE_GET_ALL();
+
+        const response = await client.get<Bond[]>(endpoint, {
             headers: {
                 [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON
             }
@@ -19,7 +22,7 @@ const calculateFinalCosts = async (id : string) => {
         // 5. Handle errors
         if (error instanceof AxiosError) {
             const statusCode = error.response?.status || 'Unknown';
-            const errorMessage = error.response?.data?.message || 'Failed to fetch calculus of initial costs.';
+            const errorMessage = error.response?.data?.message || 'Failed to delete bond';
             console.error('AxiosError occurred:', {
                 statusCode,
                 errorMessage,
@@ -35,7 +38,7 @@ const calculateFinalCosts = async (id : string) => {
             console.error('An unknown error occurred:', error);
             throw new Error('An unknown error occurred');
         }
-}
+    }
 }
 
-export default calculateFinalCosts;
+export default fetchAllBonds;
