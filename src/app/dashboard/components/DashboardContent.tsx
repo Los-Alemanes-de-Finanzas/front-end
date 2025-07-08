@@ -25,8 +25,8 @@ export const DashboardContent = () => {
         <WelcomeBanner userName={userName} />
 
         <QuickActionsSection
-          onNewProjection={() => router.push(`/dashboard/projection?username=${userName}`)}
-          onViewBonds={() => router.push(`/dashboard/bond?username=${userName}`)}
+          onNewProjection={() => router.push(`/dashboard/bonds/new?username=${userName}`)}
+          onViewBonds={() => router.push(`/dashboard/bonds?username=${userName}`)}
           onSystemConfig={() => router.push(`/dashboard/config?username=${userName}`)}
           onFinancialAnalysis={() => router.push(`/dashboard/analysis?username=${userName}`)}
           onManageTerms={() => router.push(`/dashboard/grace-periods?username=${userName}`)}

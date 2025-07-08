@@ -3,7 +3,7 @@ import React from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useBondForm } from '../hooks/useBondForm';
-import { Header } from '../../components/Header';
+import { Header } from '../../../components/Header';
 import { BondBasicInfo } from './BondBasicInfo';
 import { InitialCosts } from './InitialCosts';
 

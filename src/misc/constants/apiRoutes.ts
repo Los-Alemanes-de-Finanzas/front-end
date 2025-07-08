@@ -5,7 +5,7 @@ const ROUTE_SEPARATOR = "/";
 
 const SCHEMA_TYPES = {
   ISSUANCE_COSTS: 'issuancecosts',
-  BOND: 'bond'
+  BOND: 'bonds'
 };
 
 const ACTIONS_BONDS = {

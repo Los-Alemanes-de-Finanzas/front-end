@@ -1,5 +1,5 @@
 
-export const BASE_API_URL = ""
+export const BASE_API_URL = "https://boneplan-web-service.onrender.com"
 
 export const HEADERS = {
     CONTENT_TYPE: 'Content-Type',
@@ -8,4 +8,4 @@ export const HEADERS = {
     BEARER_TOKEN: 'Bearer '
 }
 
-export const API_TIMEOUT = 30
+export const API_TIMEOUT = 100000
