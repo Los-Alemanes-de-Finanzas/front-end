@@ -184,7 +184,7 @@ const useBondCreation = (userName: string) => {
             setIsCreating(false);
         }
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const validateFormData = (data: any): string[] => {
         const errors: string[] = [];
         
