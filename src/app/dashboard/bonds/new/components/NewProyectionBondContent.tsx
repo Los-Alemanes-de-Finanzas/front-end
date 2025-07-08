@@ -46,7 +46,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
                     </h3>
                     
                     <p className="text-gray-500 mb-6">
-                        El bono "{bondName}" ha sido guardado correctamente.
+                        El bono <strong>{bondName}</strong> ha sido guardado correctamente.
                     </p>
                     
                     <div className="flex flex-col gap-3">
@@ -95,6 +95,7 @@ const useBondCreation = (userName: string) => {
     const [createdBondName, setCreatedBondName] = useState('');
     const router = useRouter();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const createBondWithCosts = async (formData: any): Promise<boolean> => {
         setIsCreating(true);
         

@@ -63,7 +63,7 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
           </h3>
           
           <p className="text-gray-500 mb-6">
-            ¿Estás seguro de que quieres eliminar el bono <strong>"{bondName}"</strong>? 
+            ¿Estás seguro de que quieres eliminar el bono <strong>{bondName}</strong>? 
             Esta acción no se puede deshacer.
           </p>
           
@@ -243,7 +243,7 @@ interface BondRowProps {
   deletingBondId: number | null;
 }
 
-const BondRow = ({ bond, onView, onDelete, isDeleting, deletingBondId }: BondRowProps) => {
+const BondRow = ({ bond, onDelete, isDeleting, deletingBondId }: BondRowProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const userName = searchParams.get('username');
