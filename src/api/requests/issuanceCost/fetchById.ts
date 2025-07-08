@@ -1,21 +1,22 @@
 import unauthenticatedClient from "@/api/clients/unauthenticated";
 import { HEADERS } from "@/misc/constants/api";
 import { ISSUANCE_COSTS_ROUTES } from "@/misc/constants/apiRoutes";
+import { IssuanceCost } from "@/misc/types/IssuanceCost";
 import { AxiosError } from "axios";
 
-const fetchIssuanceCostById = async (id: string) => {
+const fetchIssuanceCostById = async (id: string): Promise<IssuanceCost> => {
     const client = unauthenticatedClient;
 
     try {
         const endpoint = ISSUANCE_COSTS_ROUTES.ROUTE_GET_BY_ID(id)
         
-        const response = await client.get(endpoint, {
+        const response = await client.get<IssuanceCost>(endpoint, {
             headers: {
                 [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON,
             },
         });
 
-        console.log(response.status)
+        return response.data;
     } catch(error: unknown) {
         // 5. Handle errors
         if (error instanceof AxiosError) {

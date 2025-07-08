@@ -2,7 +2,6 @@ import unauthenticatedClient from "@/api/clients/unauthenticated";
 import { HEADERS } from "@/misc/constants/api";
 import { BOND_ROUTES } from "@/misc/constants/apiRoutes";
 import { Bond } from "@/misc/types/Bond";
-import { IssuanceCost } from "@/misc/types/IssuanceCost";
 import { AxiosError } from "axios";
 
 
@@ -12,22 +11,24 @@ const createBond = async (newBond : Bond) => {
 
     // 2. create try catch block
     try {
+        console.log(newBond);
         // 3. Define the endpoint
         const endpoint = BOND_ROUTES.ROUTE_CREATE();
-
+        
         // 4. Make a POST request to the endpoint using the client
-        const response = await client.post<Bond>(endpoint, newBond, {
+        const response = await client.post(endpoint, newBond, {
             headers: {
                 [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON,
             }
         })
 
         console.log(response.status)
-    } catch (error: unknown) {
+    } catch (error) {
          // 5. Handle errors
         if (error instanceof AxiosError) {
             const statusCode = error.response?.status || 'Unknown';
             const errorMessage = error.response?.data?.message || 'Failed to create bulk variation';
+            console.log(errorMessage);
             console.error('AxiosError occurred:', {
                 statusCode,
                 errorMessage,

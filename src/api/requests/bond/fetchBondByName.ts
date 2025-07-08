@@ -1,29 +1,26 @@
 import unauthenticatedClient from "@/api/clients/unauthenticated";
 import { HEADERS } from "@/misc/constants/api";
-import { ISSUANCE_COSTS_ROUTES } from "@/misc/constants/apiRoutes";
-import { IssuanceCost } from "@/misc/types/IssuanceCost";
+import { BOND_ROUTES } from "@/misc/constants/apiRoutes";
+import { Bond } from "@/misc/types/Bond";
 import { AxiosError } from "axios";
 
-const createIssuanceCost = async (newIssuanceCost : IssuanceCost) => {
-    // 1. Create an authenticated client using the access token
+const fetchBondByName = async (name : string) : Promise<Bond> => {
     const client = unauthenticatedClient;
 
-    // 2. create try catch block
     try {
-        console.log(newIssuanceCost);
-        // 3. Define the endpoint
-        const endpoint = ISSUANCE_COSTS_ROUTES.ROUTE_CREATE();
-
-        // 4. Make a POST request to the endpoint using the client
-        const response = await client.post(endpoint, newIssuanceCost, {
+        const endpoint = BOND_ROUTES.ROUTE_GET_ALL();
+        
+        const response = await client.get<Bond[]>(endpoint, {
             headers: {
-                [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON,
+                [HEADERS.CONTENT_TYPE]: HEADERS.APPLICATION_JSON
             }
-        })
+        });
 
-        console.log(response.status)
-    } catch (error: unknown) {
-         // 5. Handle errors
+        const bond = response.data.find(e => e.name == name);
+
+        return bond!;
+    } catch(error: unknown) {
+        // 5. Handle errors
         if (error instanceof AxiosError) {
             const statusCode = error.response?.status || 'Unknown';
             const errorMessage = error.response?.data?.message || 'Failed to create bulk variation';
@@ -45,4 +42,4 @@ const createIssuanceCost = async (newIssuanceCost : IssuanceCost) => {
     }
 }
 
-export default createIssuanceCost;
+export default fetchBondByName;

@@ -93,11 +93,9 @@ export const BondBasicInfo: React.FC<BondBasicInfoProps> = ({
       {/* Third row: Capitalization, Interest Rate, Discount Rate */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <FormField label="Capitalización">
-          <CustomSelect
-            options={CAPITALIZATION_OPTIONS}
+          <TextInput
             value={formData.capitalization}
             onChange={(value) => updateField('capitalization', value)}
-            placeholder="Option"
           />
         </FormField>
         
