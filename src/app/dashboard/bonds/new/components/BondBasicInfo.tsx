@@ -7,7 +7,6 @@ import {
   FREQUENCY_OPTIONS,
   DAYS_OPTIONS,
   INTEREST_TYPE_OPTIONS,
-  CAPITALIZATION_OPTIONS,
   CURRENCY_OPTIONS
 } from '../constants/bondOptions';
 import { FormField } from './FormField';

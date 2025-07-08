@@ -30,16 +30,6 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 }) => {
     if (!isOpen) return null;
 
-    const router = useRouter();
-
-    const handleCreateAnother = () => {
-        router.push(`/dashboard/bonds/new`)
-    }
-
-    const handleViewAllBonds = () => {
-        router.push(`/dashboard/bonds`)
-    }
-
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-8 max-w-md mx-4 shadow-xl">
@@ -59,8 +49,18 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
                         El bono "{bondName}" ha sido guardado correctamente.
                     </p>
                     
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-3">
                         
+                        <GenericButton
+                            text="Ver Bono"
+                            color="teal"
+                            status="outlined"
+                            size="md"
+                            fullWidth={true}
+                            onClick={onViewBond}
+                            className="rounded-lg"
+                        />
+
                         <GenericButton
                             text="Crear Otro Bono"
                             color="teal"
@@ -202,21 +202,14 @@ const useBondCreation = (userName: string) => {
         return errors;
     };
 
-    const getUserIdFromStorage = (): number => {
-        // Implement your user ID retrieval logic here
-        // This could be from localStorage, JWT token, context, etc.
-        const userId = localStorage.getItem('userId');
-        return userId ? parseInt(userId) : 1; // Default to 1 if not found
-    };
-
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        router.push(`/bonds?username=${userName}`);
+        router.push(`/dashboard/bonds?username=${userName}`);
     };
 
     const handleViewBond = () => {
         if (createdBondId) {
-            router.push(`/bonds/${createdBondId}?username=${userName}`);
+            router.push(`/dashboard/bonds/${createdBondId}?username=${userName}`);
         }
     };
 
@@ -238,7 +231,7 @@ const useBondCreation = (userName: string) => {
 };
 
 export const NewProyectionBondContent: React.FC = () => {
-    const { formData, updateField, resetForm } = useBondForm();
+    const { formData, updateField } = useBondForm();
     
     const router = useRouter();
     const searchParams = useSearchParams();
