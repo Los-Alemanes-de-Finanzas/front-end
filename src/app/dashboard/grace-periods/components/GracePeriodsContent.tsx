@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from "react";
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Header } from "../../components/Header";
 import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 import fetchAllBonds from "@/api/requests/bond/fetchAll";
