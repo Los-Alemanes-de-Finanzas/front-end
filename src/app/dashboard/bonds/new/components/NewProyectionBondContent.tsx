@@ -238,9 +238,9 @@ export const NewProyectionBondContent: React.FC = () => {
     const userInitial = username.charAt(0).toUpperCase();
     
     useEffect(() => {
-          const savedUsername = localStorage.getItem('username');
-      
-          if (savedUsername) setUsername(savedUsername);
+        const savedUsername = localStorage.getItem('username');
+    
+        if (savedUsername) setUsername(savedUsername);
     }, []);
 
     const {
