@@ -2,14 +2,22 @@
 
 import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const ConfigSystemContent: React.FC = () => {
-  const [selectedCurrency, setSelectedCurrency] = useState(localStorage.getItem('currencyOption') ?? '');
-  const [selectedInterestRate, setSelectedInterestRate] = useState(localStorage.getItem('interestRate') ?? '');
+  const [selectedCurrency, setSelectedCurrency] = useState('');
+  const [selectedInterestRate, setSelectedInterestRate] = useState('');
   const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const savedCurrency = localStorage.getItem('currencyOption');
+    const savedRate = localStorage.getItem('interestRate');
+
+    if (savedCurrency) setSelectedCurrency(savedCurrency);
+    if (savedRate) setSelectedInterestRate(savedRate);
+  }, []);
 
   const router = useRouter();
   const searchParams = useSearchParams();
