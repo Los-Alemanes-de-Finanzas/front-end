@@ -1,16 +1,25 @@
 'use client'
+
 import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect";
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useState } from "react";
+import { Header } from "../../components/Header";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ConfigSystemContent: React.FC = () => {
-  const [selectedCurrency, setSelectedCurrency] = useState('');
-  const [selectedInterestRate, setSelectedInterestRate] = useState('');
+  const [selectedCurrency, setSelectedCurrency] = useState(localStorage.getItem('currencyOption') ?? '');
+  const [selectedInterestRate, setSelectedInterestRate] = useState(localStorage.getItem('interestRate') ?? '');
+  const [showMessage, setShowMessage] = useState(false);
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const userName = searchParams.get('username') || 'Usuario';
+  const userInitial = userName.charAt(0).toUpperCase();
 
   const currencyOptions: SelectOption[] = [
-    { value: 'usd', label: 'USD - Dólar Estadounidense' },
-    { value: 'eur', label: 'EUR - Euro' },
-    { value: 'pen', label: 'PEN - Sol Peruano' },
+    { value: 'USD', label: 'USD - Dólar Estadounidense' },
+    { value: 'EUR', label: 'EUR - Euro' },
+    { value: 'PEN', label: 'PEN - Sol Peruano' },
   ];
 
   const interestRateOptions: SelectOption[] = [
@@ -23,20 +32,25 @@ const ConfigSystemContent: React.FC = () => {
   ];
 
   const handleSave = () => {
-    console.log('Guardando configuración:', {
-      currency: selectedCurrency,
-      interestRate: selectedInterestRate
-    });
+    localStorage.setItem('currencyOption', selectedCurrency);
+    localStorage.setItem('interestRate', selectedInterestRate);
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 3000);
+  };
+
+  const handleLogout = () => {
+    router.push('/');
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
+    <div className="bg-gray-100 min-h-screen">
+      <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <h1 className="text-3xl font-bold text-center text-gray-900 mb-16">
+        <h1 className="text-3xl font-bold text-center text-gray-900 my-16">
           CONFIGURACIÓN DEL SISTEMA
         </h1>
-        
+
         {/* Configuration Form */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
           {/* Currency Selection */}
@@ -67,7 +81,7 @@ const ConfigSystemContent: React.FC = () => {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center space-y-4">
           <div className="w-64">
             <GenericButton
               text="Guardar"
@@ -79,6 +93,13 @@ const ConfigSystemContent: React.FC = () => {
               className="rounded-lg"
             />
           </div>
+
+          {/* Success Message */}
+          {showMessage && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg text-center w-full max-w-md">
+              Configuración guardada correctamente.
+            </div>
+          )}
         </div>
       </div>
     </div>
