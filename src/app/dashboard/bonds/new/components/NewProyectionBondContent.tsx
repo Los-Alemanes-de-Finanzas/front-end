@@ -239,11 +239,13 @@ export const NewProyectionBondContent: React.FC = () => {
     const router = useRouter();
     
     useEffect(() => {
-        const savedUsername = localStorage.getItem('username');
+        if (typeof window !== 'undefined') {
+            const savedUsername = localStorage.getItem('username');
     
-        if (savedUsername){ 
-            setUsername(savedUsername);
-            setUserInitial(savedUsername.charAt(0).toUpperCase());
+            if (savedUsername){ 
+                setUsername(savedUsername);
+                setUserInitial(savedUsername.charAt(0).toUpperCase());
+            }
         }
     }, []);
 
