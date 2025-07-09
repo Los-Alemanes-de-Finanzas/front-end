@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useBondForm } from '../hooks/useBondForm';
 import { Header } from '../../../components/Header';
 import { BondBasicInfo } from './BondBasicInfo';

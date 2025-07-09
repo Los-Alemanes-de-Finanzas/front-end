@@ -4,7 +4,7 @@ import { CustomSelect, SelectOption } from "@/app/shared/components/CustomSelect
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const ConfigSystemContent: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('');

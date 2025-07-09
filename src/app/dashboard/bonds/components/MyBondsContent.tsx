@@ -1,6 +1,6 @@
 'use client';
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Header } from "../../components/Header";
 import fetchAllBonds from "@/api/requests/bond/fetchAll";
 import { Bond } from "@/misc/types/Bond";
@@ -245,17 +245,14 @@ interface BondRowProps {
 
 const BondRow = ({ bond, onDelete, isDeleting, deletingBondId }: BondRowProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const username = searchParams.get('username');
 
   const handleDelete = () => {
     onDelete(bond.id, bond.name);
   };
 
   const handleView = () => {
-    const url = username 
-      ? `/dashboard/bonds/${bond.id}?username=${username}`
-      : `/dashboard/bonds/${bond.id}`;
+    const url = `/dashboard/bonds/${bond.id}`;
+
     router.push(url);
   };
 

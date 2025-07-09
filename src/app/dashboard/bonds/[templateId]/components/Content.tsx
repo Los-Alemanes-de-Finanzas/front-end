@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useRouter, useSearchParams, useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { Header } from '../../../components/Header';
 import { useBondForm } from '../../new/hooks/useBondForm';
 import { BondBasicInfo } from '../../new/components/BondBasicInfo';
@@ -200,16 +200,15 @@ export const SpecificBondContent: React.FC = () => {
     const [issuanceCost, setIssuanceCost] = useState<IssuanceCost | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    
+    const [username, setUsername] = useState('');
+
     const router = useRouter();
     const params = useParams();
-    const searchParams = useSearchParams();
     
     // Get bond ID from URL params
     const bondId = params?.templateId as string;
     
-    const userName = searchParams.get('username') || 'Usuario';
-    const userInitial = userName.charAt(0).toUpperCase();
+    const userInitial = username.charAt(0).toUpperCase();
 
     // Initialize form with loaded bond data
     const { formData, updateField, handleSubmit, isLoading: isSaving } = useBondFormWithData(bond, issuanceCost);
@@ -246,6 +245,9 @@ export const SpecificBondContent: React.FC = () => {
 
     // Load data on component mount
     useEffect(() => {
+        const savedUsername = localStorage.getItem('username');
+    
+        if (savedUsername) setUsername(savedUsername);
         loadBond();
     }, [bondId]);
 
@@ -254,7 +256,7 @@ export const SpecificBondContent: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        router.push(`/dashboard/bonds?username=${userName}`);
+        router.push(`/dashboard/bonds`);
     };
 
     const handleSaveChanges = async () => {
@@ -277,7 +279,7 @@ export const SpecificBondContent: React.FC = () => {
     if (loading) {
         return (
             <div className="bg-gray-100 min-h-screen">
-                <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+                <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
                 <LoadingState />
             </div>
         );
@@ -287,7 +289,7 @@ export const SpecificBondContent: React.FC = () => {
     if (error) {
         return (
             <div className="bg-gray-100 min-h-screen">
-                <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+                <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
                 <ErrorState 
                     error={error} 
                     onRetry={loadBond} 
@@ -301,7 +303,7 @@ export const SpecificBondContent: React.FC = () => {
     if (!bond) {
         return (
             <div className="bg-gray-100 min-h-screen">
-                <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+                <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
                 <BondNotFoundState onGoBack={handleGoBack} />
             </div>
         );
@@ -310,7 +312,7 @@ export const SpecificBondContent: React.FC = () => {
     // Show main content
     return (
         <div className="bg-gray-100 min-h-screen">
-            <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+            <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="flex items-center justify-between my-8">
