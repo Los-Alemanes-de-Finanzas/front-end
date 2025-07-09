@@ -25,6 +25,8 @@ export const BondBasicInfo: React.FC<BondBasicInfoProps> = ({
   formData,
   updateField
 }) => {
+  formData.currency = localStorage.getItem('currencyOption') ?? '';
+  formData.interestRate = localStorage.getItem('interestRate') ?? '';
   return (
     <div className="space-y-8">
       {/* Bond Name */}
