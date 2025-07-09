@@ -328,7 +328,7 @@ export const NewProyectionBondContent: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        const url = username ? `/dashboard/bonds?username=${username}` : '/dashboard/bonds';
+        const url = username ? `/dashboard/bonds` : '/dashboard/bonds';
         router.push(url);
     };
 
