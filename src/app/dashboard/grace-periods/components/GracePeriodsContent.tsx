@@ -131,8 +131,9 @@ const GracePeriodsContent: React.FC = () => {
   const [scheduleError, setScheduleError] = useState<string | null>(null);
 
   const [username, setUsername] = useState('');
+  const [userInitial, setUserInitial] = useState('');
+
   const router = useRouter();
-  const userInitial = username.charAt(0).toUpperCase();
 
   // Grace period options
   const gracePeriodOptions: SelectOption[] = [
@@ -166,7 +167,10 @@ const GracePeriodsContent: React.FC = () => {
   useEffect(() => {
     const savedUsername = localStorage.getItem('username');
   
-    if (savedUsername) setUsername(savedUsername);
+    if (savedUsername){ 
+      setUsername(savedUsername);
+      setUserInitial(savedUsername.charAt(0).toUpperCase());
+    }
     loadBonds();
   }, []);
 

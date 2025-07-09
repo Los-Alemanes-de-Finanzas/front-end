@@ -27,6 +27,7 @@ const FinancialAnalysisContent: React.FC = () => {
   ];
 
   const [username, setUsername] = useState('');
+  const [userInitial, setUserInitial] = useState('');
 
   const handleAnalyze = () => {
     if (!selectedBond) {
@@ -51,13 +52,15 @@ const FinancialAnalysisContent: React.FC = () => {
   };
 
     useEffect(() => {
-      const savedUsername = localStorage.getItem('username');
+        const savedUsername = localStorage.getItem('username');
     
-      if (savedUsername) setUsername(savedUsername);
+        if (savedUsername){ 
+            setUsername(savedUsername);
+            setUserInitial(savedUsername.charAt(0).toUpperCase());
+        }
     }, []);
-    const router = useRouter();
 
-    const userInitial = username.charAt(0).toUpperCase();
+    const router = useRouter();
 
     const handleLogout = () => {
         console.log('Logging out...');

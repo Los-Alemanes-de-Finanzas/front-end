@@ -201,14 +201,13 @@ export const SpecificBondContent: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [username, setUsername] = useState('');
+    const [userInitial, setUserInitial] = useState('');
 
     const router = useRouter();
     const params = useParams();
     
     // Get bond ID from URL params
     const bondId = params?.templateId as string;
-    
-    const userInitial = username.charAt(0).toUpperCase();
 
     // Initialize form with loaded bond data
     const { formData, updateField, handleSubmit, isLoading: isSaving } = useBondFormWithData(bond, issuanceCost);
@@ -247,7 +246,10 @@ export const SpecificBondContent: React.FC = () => {
     useEffect(() => {
         const savedUsername = localStorage.getItem('username');
     
-        if (savedUsername) setUsername(savedUsername);
+        if (savedUsername){ 
+            setUsername(savedUsername);
+            setUserInitial(savedUsername.charAt(0).toUpperCase());
+        }
         loadBond();
     }, [bondId]);
 

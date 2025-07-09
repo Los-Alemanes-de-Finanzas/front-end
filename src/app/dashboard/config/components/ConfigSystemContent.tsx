@@ -11,6 +11,7 @@ const ConfigSystemContent: React.FC = () => {
   const [selectedInterestRate, setSelectedInterestRate] = useState('');
   const [showMessage, setShowMessage] = useState(false);
   const [username, setUsername] = useState('');
+  const [userInitial, setUserInitial] = useState('');
 
   useEffect(() => {
     const savedCurrency = localStorage.getItem('currencyOption');
@@ -19,11 +20,13 @@ const ConfigSystemContent: React.FC = () => {
 
     if (savedCurrency) setSelectedCurrency(savedCurrency);
     if (savedRate) setSelectedInterestRate(savedRate);
-    if (savedUsername) setUsername(savedUsername);
+    if (savedUsername){ 
+        setUsername(savedUsername);
+        setUserInitial(savedUsername.charAt(0).toUpperCase());
+    }
   }, []);
 
   const router = useRouter();
-  const userInitial = username.charAt(0).toUpperCase();
 
   const currencyOptions: SelectOption[] = [
     { value: 'USD', label: 'USD - Dólar Estadounidense' },

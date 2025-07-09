@@ -9,14 +9,16 @@ import { DashboardFooter } from './DashboardFooter';
 export const DashboardContent = () => {
   const router = useRouter();
   const [userName, setUsername] = useState('');
+  const [userInitial, setUserInitial] = useState('');
 
   useEffect(() => {
       const savedUsername = localStorage.getItem('username');
   
-      if (savedUsername) setUsername(savedUsername);
+      if (savedUsername){ 
+        setUsername(savedUsername);
+        setUserInitial(savedUsername.charAt(0).toUpperCase());
+      }
   }, []);
-
-  const userInitial = userName.charAt(0).toUpperCase();
 
   const handleLogout = () => {
     console.log('Logging out...');

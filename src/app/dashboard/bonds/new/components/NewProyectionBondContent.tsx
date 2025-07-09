@@ -234,15 +234,18 @@ const useBondCreation = () => {
 export const NewProyectionBondContent: React.FC = () => {
     const { formData, updateField } = useBondForm();
     const [username, setUsername] = useState('');
+    const [userInitial, setUserInitial] = useState('');
+
     const router = useRouter();
     
     useEffect(() => {
         const savedUsername = localStorage.getItem('username');
     
-        if (savedUsername) setUsername(savedUsername);
+        if (savedUsername){ 
+            setUsername(savedUsername);
+            setUserInitial(savedUsername.charAt(0).toUpperCase());
+        }
     }, []);
-
-    const userInitial = username.charAt(0).toUpperCase();
 
     const {
         isCreating,
