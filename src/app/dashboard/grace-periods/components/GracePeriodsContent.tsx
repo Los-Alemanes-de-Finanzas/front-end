@@ -130,10 +130,9 @@ const GracePeriodsContent: React.FC = () => {
   const [bondsError, setBondsError] = useState<string | null>(null);
   const [scheduleError, setScheduleError] = useState<string | null>(null);
 
+  const [username, setUsername] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const userName = searchParams.get('username') || 'Usuario';
-  const userInitial = userName.charAt(0).toUpperCase();
+  const userInitial = username.charAt(0).toUpperCase();
 
   // Grace period options
   const gracePeriodOptions: SelectOption[] = [
@@ -165,6 +164,9 @@ const GracePeriodsContent: React.FC = () => {
   };
 
   useEffect(() => {
+    const savedUsername = localStorage.getItem('username');
+  
+    if (savedUsername) setUsername(savedUsername);
     loadBonds();
   }, []);
 
@@ -241,7 +243,7 @@ const GracePeriodsContent: React.FC = () => {
   };
 
   const handleGoBack = () => {
-    router.push(`/dashboard?username=${userName}`);
+    router.push(`/dashboard?username=${username}`);
   };
 
   // Get selected bond details for display
@@ -249,7 +251,7 @@ const GracePeriodsContent: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+      <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center justify-between my-12">

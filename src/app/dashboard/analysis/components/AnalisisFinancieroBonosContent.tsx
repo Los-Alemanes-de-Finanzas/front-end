@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { IndicatorField } from "./IndicatorField";
@@ -26,6 +26,8 @@ const FinancialAnalysisContent: React.FC = () => {
     { value: 'bond4', label: 'Bono Verde DEF - 6.1% 2032' }
   ];
 
+  const [username, setUsername] = useState('');
+
   const handleAnalyze = () => {
     if (!selectedBond) {
       alert('Por favor seleccione un bono para analizar');
@@ -48,10 +50,14 @@ const FinancialAnalysisContent: React.FC = () => {
     });
   };
 
+    useEffect(() => {
+      const savedUsername = localStorage.getItem('username');
+    
+      if (savedUsername) setUsername(savedUsername);
+    }, []);
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const userName = searchParams.get('username') || 'Usuario';
-    const userInitial = userName.charAt(0).toUpperCase();
+
+    const userInitial = username.charAt(0).toUpperCase();
 
     const handleLogout = () => {
         console.log('Logging out...');
@@ -60,7 +66,7 @@ const FinancialAnalysisContent: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+            <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <h1 className="text-3xl font-bold text-center text-gray-900 my-16">

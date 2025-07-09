@@ -10,19 +10,20 @@ const ConfigSystemContent: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('');
   const [selectedInterestRate, setSelectedInterestRate] = useState('');
   const [showMessage, setShowMessage] = useState(false);
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const savedCurrency = localStorage.getItem('currencyOption');
     const savedRate = localStorage.getItem('interestRate');
+    const savedUsername = localStorage.getItem('username');
 
     if (savedCurrency) setSelectedCurrency(savedCurrency);
     if (savedRate) setSelectedInterestRate(savedRate);
+    if (savedUsername) setUsername(savedUsername);
   }, []);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const userName = searchParams.get('username') || 'Usuario';
-  const userInitial = userName.charAt(0).toUpperCase();
+  const userInitial = username.charAt(0).toUpperCase();
 
   const currencyOptions: SelectOption[] = [
     { value: 'USD', label: 'USD - Dólar Estadounidense' },
@@ -52,7 +53,7 @@ const ConfigSystemContent: React.FC = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+      <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <h1 className="text-3xl font-bold text-center text-gray-900 my-16">

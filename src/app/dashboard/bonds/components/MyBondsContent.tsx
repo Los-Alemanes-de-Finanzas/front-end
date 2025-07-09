@@ -246,15 +246,15 @@ interface BondRowProps {
 const BondRow = ({ bond, onDelete, isDeleting, deletingBondId }: BondRowProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const userName = searchParams.get('username');
+  const username = searchParams.get('username');
 
   const handleDelete = () => {
     onDelete(bond.id, bond.name);
   };
 
   const handleView = () => {
-    const url = userName 
-      ? `/dashboard/bonds/${bond.id}?username=${userName}`
+    const url = username 
+      ? `/dashboard/bonds/${bond.id}?username=${username}`
       : `/dashboard/bonds/${bond.id}`;
     router.push(url);
   };
@@ -317,11 +317,15 @@ const MyBondsContent = () => {
   const [bondToDelete, setBondToDelete] = useState<{ id: number; name: string } | null>(null);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-
+  const [username, setUsername] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const userName = searchParams.get('username') || 'Usuario';
-  const userInitial = userName.charAt(0).toUpperCase();
+  const userInitial = username.charAt(0).toUpperCase();
+
+  useEffect(() => {
+        const savedUsername = localStorage.getItem('username');
+    
+        if (savedUsername) setUsername(savedUsername);
+    }, []);
 
   // Load bonds data
   const loadBonds = async () => {
@@ -356,7 +360,7 @@ const MyBondsContent = () => {
 
   const handleView = (bondId: number) => {
     console.log(`Ver bono ${bondId}`);
-    const url = `/dashboard/bonds/${bondId}?username=${userName}`;
+    const url = `/dashboard/bonds/${bondId}?username=${username}`;
     router.push(url);
   };
 
@@ -412,7 +416,7 @@ const MyBondsContent = () => {
   };
 
   const handleCreateNew = () => {
-    router.push(`/dashboard/bonds/new?username=${userName}`);
+    router.push(`/dashboard/bonds/new?username=${username}`);
   };
 
   const handleCloseSuccessNotification = () => {
@@ -423,7 +427,7 @@ const MyBondsContent = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header 
-        userName={userName} 
+        userName={username} 
         userInitial={userInitial} 
         onLogout={handleLogout} 
       />

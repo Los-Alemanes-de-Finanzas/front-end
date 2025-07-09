@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from './Header';
 import { WelcomeBanner } from './WelcomeBanner';
@@ -8,8 +8,14 @@ import { DashboardFooter } from './DashboardFooter';
 
 export const DashboardContent = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const userName = searchParams.get('username') || 'Usuario';
+  const [userName, setUsername] = useState('');
+
+  useEffect(() => {
+      const savedUsername = localStorage.getItem('username');
+  
+      if (savedUsername) setUsername(savedUsername);
+  }, []);
+
   const userInitial = userName.charAt(0).toUpperCase();
 
   const handleLogout = () => {
@@ -25,11 +31,11 @@ export const DashboardContent = () => {
         <WelcomeBanner userName={userName} />
 
         <QuickActionsSection
-          onNewProjection={() => router.push(`/dashboard/bonds/new?username=${userName}`)}
-          onViewBonds={() => router.push(`/dashboard/bonds?username=${userName}`)}
-          onSystemConfig={() => router.push(`/dashboard/config?username=${userName}`)}
-          onFinancialAnalysis={() => router.push(`/dashboard/analysis?username=${userName}`)}
-          onManageTerms={() => router.push(`/dashboard/grace-periods?username=${userName}`)}
+          onNewProjection={() => router.push(`/dashboard/bonds/new`)}
+          onViewBonds={() => router.push(`/dashboard/bonds`)}
+          onSystemConfig={() => router.push(`/dashboard/config`)}
+          onFinancialAnalysis={() => router.push(`/dashboard/analysis`)}
+          onManageTerms={() => router.push(`/dashboard/grace-periods`)}
         />
 
         <DashboardFooter />

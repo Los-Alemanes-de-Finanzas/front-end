@@ -57,8 +57,10 @@ export default function LoginPage() {
       
       const userName = formData.email.split("@")[0];
 
+      localStorage.setItem('username', userName);
+
       // On successful login
-      router.push(`/dashboard?username=${encodeURIComponent(userName)}`);
+      router.push(`/dashboard`);
     } catch (error) {
       console.error('Login error:', error);
       // Handle login error

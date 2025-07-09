@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useBondForm } from '../hooks/useBondForm';
@@ -88,7 +88,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 };
 
 // Custom hook for bond creation logic
-const useBondCreation = (userName: string) => {
+const useBondCreation = () => {
     const [isCreating, setIsCreating] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [createdBondId, setCreatedBondId] = useState<number | null>(null);
@@ -205,12 +205,12 @@ const useBondCreation = (userName: string) => {
 
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        router.push(`/dashboard/bonds?username=${userName}`);
+        router.push(`/dashboard/bonds`);
     };
 
     const handleViewBond = () => {
         if (createdBondId) {
-            router.push(`/dashboard/bonds/${createdBondId}?username=${userName}`);
+            router.push(`/dashboard/bonds/${createdBondId}`);
         }
     };
 
@@ -233,12 +233,16 @@ const useBondCreation = (userName: string) => {
 
 export const NewProyectionBondContent: React.FC = () => {
     const { formData, updateField } = useBondForm();
-    
+    const [username, setUsername] = useState('');
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const userName = searchParams.get('username') || 'Usuario';
-    const userInitial = userName.charAt(0).toUpperCase();
+    const userInitial = username.charAt(0).toUpperCase();
     
+    useEffect(() => {
+          const savedUsername = localStorage.getItem('username');
+      
+          if (savedUsername) setUsername(savedUsername);
+    }, []);
+
     const {
         isCreating,
         showSuccessModal,
@@ -247,7 +251,7 @@ export const NewProyectionBondContent: React.FC = () => {
         handleSuccessModalClose,
         handleViewBond,
         handleCreateAnother
-    } = useBondCreation(userName);
+    } = useBondCreation();
 
     const handleLogout = () => {
         router.push('/');
@@ -261,12 +265,12 @@ export const NewProyectionBondContent: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        router.push(`/dashboard/bonds?username=${userName}`);
+        router.push(`/dashboard/bonds`);
     };
     
     return (
         <div className="bg-gray-100 min-h-screen">
-            <Header userName={userName} userInitial={userInitial} onLogout={handleLogout} />
+            <Header userName={username} userInitial={userInitial} onLogout={handleLogout} />
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="flex items-center justify-between my-8">
