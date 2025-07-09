@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { GenericButton } from "@/app/shared/components/GenericButton";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useBondForm } from '../hooks/useBondForm';
 import { Header } from '../../../components/Header';
 import { BondBasicInfo } from './BondBasicInfo';
@@ -88,7 +88,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 };
 
 // Custom hook for bond creation logic
-const useBondCreation = () => {
+const useBondCreation = (userName: string) => {
     const [isCreating, setIsCreating] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [createdBondId, setCreatedBondId] = useState<number | null>(null);
@@ -107,38 +107,41 @@ const useBondCreation = () => {
                 return false;
             }
 
-            // Step 2: Prepare bond data
+            // Step 2: Get user ID safely
+            const userId = getUserIdSafely();
+
+            // Step 3: Prepare bond data
             const [day, month, year] = formData.issueDate.split("/");
             const parsedDate = new Date(Number(year), Number(month) - 1, Number(day));
             const bondData: Bond = {
                 id: 0,
                 name: formData.bondName,
-                userId: 1, 
+                userId: userId, 
                 nominalValue: parseFloat(formData.nominalValue) || 0,
                 commercialValue: parseFloat(formData.commercialValue) || 0,
                 numberOfYears: parseInt(formData.years) || 0,
                 couponFrequency: formData.couponFrequency,
                 daysPerYear: parseInt(formData.daysPerYear) || 360,
                 interestRateType: formData.interestRateType,
-                capitalization: parseInt(formData.capitalization) || 0, // You might need to map this
+                capitalization: parseInt(formData.capitalization) || 0,
                 interestRate: parseFloat(formData.interestRate) || 0,
                 annualDiscountRate: parseFloat(formData.discountRate) || 0,
                 issueDate: parsedDate,
-                gracePeriodType: 0, // Default value, you might want to add this to form
-                gracePeriodDuration: 0, // Default value, you might want to add this to form
+                gracePeriodType: 0,
+                gracePeriodDuration: 0,
                 currency: formData.currency,
-                effectiveAnnualRate: 0, // This might be calculated
-                cokPerPeriod: 0 // This might be calculated
+                effectiveAnnualRate: 0,
+                cokPerPeriod: 0
             };
 
             console.log('Creating bond with data:', bondData);
 
-            // Step 3: Create the bond
+            // Step 4: Create the bond
             await createBond(bondData);
             
             const createdBond = await fetchBondByName(formData.bondName);
 
-            // Step 4: Prepare issuance cost data
+            // Step 5: Prepare issuance cost data
             const issuanceCostData: IssuanceCost = {
                 id: 0,
                 bondId: createdBond.id,
@@ -148,21 +151,21 @@ const useBondCreation = () => {
                 placementCost: parseFloat(formData.placementPct) || 0,
                 whoPaysPlacement: formData.placementPayer || '',
                 flotationCost: parseFloat(formData.flotationPct) || 0,
-                whoPaysFloatation: formData.flotationPayer || '', // Note: API has typo "Floatation"
+                whoPaysFloatation: formData.flotationPayer || '',
                 cavaliFee: parseFloat(formData.cavaliPct) || 0,
                 whoPaysCavali: formData.cavaliPayer || '',
-                initialCostIssuer: 0, // This might be calculated
-                initialCostBondholder: 0 // This might be calculated
+                initialCostIssuer: 0,
+                initialCostBondholder: 0
             };
 
             console.log('Creating issuance cost with data:', issuanceCostData);
 
-            // Step 5: Create the issuance cost
+            // Step 6: Create the issuance cost
             const createdIssuanceCost = await createIssuanceCost(issuanceCostData);
             
             console.log('Issuance cost created successfully:', createdIssuanceCost);
 
-            // Step 6: Show success
+            // Step 7: Show success
             setCreatedBondId(createdBond.id);
             setCreatedBondName(createdBond.name || formData.bondName);
             setShowSuccessModal(true);
@@ -184,6 +187,7 @@ const useBondCreation = () => {
             setIsCreating(false);
         }
     };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const validateFormData = (data: any): string[] => {
         const errors: string[] = [];
@@ -203,14 +207,30 @@ const useBondCreation = () => {
         return errors;
     };
 
+    const getUserIdSafely = (): number => {
+        // Check if we're in the browser environment
+        if (typeof window !== 'undefined') {
+            const storedUserId = localStorage.getItem('userId');
+            if (storedUserId && !isNaN(Number(storedUserId))) {
+                return Number(storedUserId);
+            }
+        }
+        // Default fallback
+        return 1;
+    };
+
     const handleSuccessModalClose = () => {
         setShowSuccessModal(false);
-        router.push(`/dashboard/bonds`);
+        const url = userName ? `/dashboard/bonds` : '/dashboard/bonds';
+        router.push(url);
     };
 
     const handleViewBond = () => {
         if (createdBondId) {
-            router.push(`/dashboard/bonds/${createdBondId}`);
+            const url = userName 
+                ? `/dashboard/bonds/${createdBondId}` 
+                : `/dashboard/bonds/${createdBondId}`;
+            router.push(url);
         }
     };
 
@@ -231,23 +251,55 @@ const useBondCreation = () => {
     };
 };
 
-export const NewProyectionBondContent: React.FC = () => {
-    const { formData, updateField } = useBondForm();
+// Custom hook for managing user session safely
+const useUserSession = () => {
     const [username, setUsername] = useState('');
     const [userInitial, setUserInitial] = useState('');
+    const [isLoaded, setIsLoaded] = useState(false);
 
-    const router = useRouter();
-    
+    const searchParams = useSearchParams();
+
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedUsername = localStorage.getItem('username');
-    
-            if (savedUsername){ 
-                setUsername(savedUsername);
-                setUserInitial(savedUsername.charAt(0).toUpperCase());
+        // Get username from URL params first (priority)
+        const urlUsername = searchParams.get('username');
+        
+        if (urlUsername) {
+            setUsername(urlUsername);
+            setUserInitial(urlUsername.charAt(0).toUpperCase());
+            setIsLoaded(true);
+            
+            // Save to localStorage for future use (client-side only)
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('username', urlUsername);
             }
+        } else {
+            // Fallback to localStorage if no URL param (client-side only)
+            if (typeof window !== 'undefined') {
+                const savedUsername = localStorage.getItem('username');
+                if (savedUsername) {
+                    setUsername(savedUsername);
+                    setUserInitial(savedUsername.charAt(0).toUpperCase());
+                } else {
+                    // Default fallback
+                    setUsername('Usuario');
+                    setUserInitial('U');
+                }
+            } else {
+                // Server-side fallback
+                setUsername('Usuario');
+                setUserInitial('U');
+            }
+            setIsLoaded(true);
         }
-    }, []);
+    }, [searchParams]);
+
+    return { username, userInitial, isLoaded };
+};
+
+export const NewProyectionBondContent: React.FC = () => {
+    const { formData, updateField } = useBondForm();
+    const { username, userInitial, isLoaded } = useUserSession();
+    const router = useRouter();
 
     const {
         isCreating,
@@ -257,9 +309,14 @@ export const NewProyectionBondContent: React.FC = () => {
         handleSuccessModalClose,
         handleViewBond,
         handleCreateAnother
-    } = useBondCreation();
+    } = useBondCreation(username);
 
     const handleLogout = () => {
+        // Clear localStorage on logout (client-side only)
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+        }
         router.push('/');
     };
 
@@ -271,8 +328,24 @@ export const NewProyectionBondContent: React.FC = () => {
     };
 
     const handleGoBack = () => {
-        router.push(`/dashboard/bonds`);
+        const url = username ? `/dashboard/bonds?username=${username}` : '/dashboard/bonds';
+        router.push(url);
     };
+
+    // Show loading state while user session is being loaded
+    if (!isLoaded) {
+        return (
+            <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+                <div className="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-gray-500 bg-white">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Cargando...
+                </div>
+            </div>
+        );
+    }
     
     return (
         <div className="bg-gray-100 min-h-screen">
