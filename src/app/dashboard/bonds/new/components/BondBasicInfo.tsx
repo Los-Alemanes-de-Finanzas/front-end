@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CustomSelect } from "@/app/shared/components/CustomSelect";
 import { DateInput } from "@/app/shared/components/DateInput";
 import { TextInput } from './TextInput';
@@ -25,8 +25,13 @@ export const BondBasicInfo: React.FC<BondBasicInfoProps> = ({
   formData,
   updateField
 }) => {
-  formData.currency = localStorage.getItem('currencyOption') ?? '';
-  formData.interestRate = localStorage.getItem('interestRate') ?? '';
+  useEffect(() => {
+    const storedCurrency = localStorage.getItem('currencyOption');
+    const storedInterestRate = localStorage.getItem('interestRate');
+
+    if (storedCurrency) updateField('currency', storedCurrency);
+    if (storedInterestRate) updateField('interestRate', storedInterestRate);
+  }, [updateField]);
   return (
     <div className="space-y-8">
       {/* Bond Name */}
